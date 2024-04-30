@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIR QUALITY INDEX</title>
+    <style>
+        body {
+            background-color: lightblue;
+            font-family: Arial, sans-serif;
+        }
+        #dashboard {
+            float: left;
+            width: 20%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        #content {
+            float: right;
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            background-color: #0066cc;
+            padding: 20px;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>AIR QUALITY INDEX</h1>
+    <div id="dashboard">
+        <h2>Dashboard</h2>
+        <ul>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">References</a></li>
+        </ul>
+    </div>
+    <div id="content">
+        <p>Welcome to the Air Quality Index page. Here you can view the current air quality index for different countries and get recommendations for improving air quality.</p>
+        <p>The data is updated daily and is based on data from the World Air Quality Index project.</p>
+        <p>To get started, click the "Login" button in the dashboard on the left.</p>
+        <p>If you have any questions or need help, click the "Help" button in the dashboard.</p>
+    </div>
+    <script>
+        // Load the data using the Python script
+        fetch('data.js')
+            .then(response => response.text())
+            .then(data => {
+                // Parse the data as JSON
+                const jsonData = JSON.parse(data);
+                // Create a table to display the data
+                const table = document.createElement('table');
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            <th>AQI</th>
+                            <th>Recommendation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${jsonData.map(row => `
+                            <tr>
+                                <td>${row.country}</td>
+                                <td>${row.aqi}</td>
+                                <td>${row.recommendation}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                `;
+                // Add the table to the page
+                document.getElementById('content').appendChild(table);
+            });
+    </script>
+</body>
+</html>
